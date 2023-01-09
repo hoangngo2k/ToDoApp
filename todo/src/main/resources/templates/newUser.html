@@ -19,19 +19,19 @@
         <label for="username">Username</label>
         <input type="text" th:field="*{username}" id="username" placeholder="abc123"
                class="form-control mb-4 col-4 is-invalid" required>
-<!--        <span th:if="${#fields.hasErrors('name')}" th:errors="*{username}"></span>-->
+        <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
         <label for="email">Email</label>
         <input type="email" th:field="*{email}" id="email" placeholder="example@gmail.com"
                class="form-control mb-4 col-4 is-invalid" required>
-<!--        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>-->
+        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
         <label for="birthday">Birthday</label>
         <input type="date" th:field="*{birthday}" id="birthday"
                class="form-control mb-4 col-4 is-invalid" required>
-<!--        <span th:if="${#fields.hasErrors('email')}" th:errors="*{Birthday}"></span>-->
+        <span th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></span>
         <input type="submit" value="Save" class="btn btn-info col-2">
     </form>
     <hr>
-    <a th:href="@{/}"> Back to Employee List</a>
+    <a th:href="@{/}"> Back to home page</a>
 </div>
 </body>
 </html>

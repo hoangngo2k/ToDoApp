@@ -34,18 +34,12 @@ public class UserController {
                                @RequestParam(name = "sort", required = false, defaultValue = "asc") String sort,
                                @RequestParam(name = "field", required = false, defaultValue = "id") String field,
                                @ModelAttribute(value = "searchForm") SearchForm searchForm) {
-        Sort sortable = null;
-        if (sort.equals("asc"))
-            sortable = Sort.by(field).ascending();
-        if (sort.equals("desc"))
-            sortable = Sort.by(field).descending();
         String sortDirection = sort.equals("asc") ? "desc" : "asc";
         model.addAttribute("sortDirection", sortDirection);
         model.addAttribute("page", page);
         model.addAttribute("size", size);
-        assert sortable != null;
-        Pageable pageable = PageRequest.of(page, size, sortable);
-        Page<User> userPage = service.getAll(pageable, searchForm.getUsername());
+        Pageable pageable = null;
+        Page<User> userPage = service.getAll(pageable, searchForm.getUsername(), page, size, sort, field);
         int totalPages = userPage.getTotalPages();
         if(totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
@@ -56,13 +50,7 @@ public class UserController {
         return new ModelAndView("index");
     }
 
-//    @GetMapping("/search")
-//    public ModelAndView getByUsername(@ModelAttribute("searchForm") SearchForm searchForm, Model model) {
-//        model.addAttribute("userList", service.getUserByUsername(searchForm.getUsername()));
-//        return new ModelAndView("index");
-//    }
-
-    @GetMapping("/addnew")
+    @GetMapping("/users")
     public ModelAndView addNewEmployee(Model model) {
         User user = new User();
         model.addAttribute("user", user);

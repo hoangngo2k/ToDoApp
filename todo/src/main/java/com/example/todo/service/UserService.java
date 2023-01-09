@@ -5,7 +5,9 @@ import com.example.todo.entity.User;
 import com.example.todo.repository.UserRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +26,18 @@ public class UserService {
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("username"), "%" + key + "%");
     }
 
-    public Page<User> getAll(Pageable pageable, String username) {
+    public Page<User> getAll(Pageable pageable, String username, int page, int size, String sort, String field) {
         Specification<User> where = null;
         if(!StringUtils.isEmpty(username))
             where = searchByUsername(username);
+        Sort sortable = null;
+        if (sort.equals("asc"))
+            sortable = Sort.by(field).ascending();
+        if (sort.equals("desc"))
+            sortable = Sort.by(field).descending();
+        if (sortable != null) {
+            pageable = PageRequest.of(page, size, sortable);
+        }
         return repository.findAll(where, pageable);
     }
 
